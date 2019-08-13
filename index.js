@@ -1,33 +1,34 @@
-// Without "./", Node looks
-// in its global module folder
 const http = require("http");
-function handleRequestAndResponse(req, res) {
-    console.log(req.url);
-    const timestamp = new Date();
-    console.log("Received a Request");
-    res.end(`<h1>Hello World ${timestamp}</h1>`);  // .end() sends the response.
-                                          // It "tapes up the box and ships it".
-}
-// What's a server??!?
-// A server is a piece of code
-// or a computer running a piece of code
-// that does something useful for YOU.
-// Usually, servers store
-// data and often manipulate that data.
-// const server = http.createServer(handleRequestAndResponse);
-const server = http.createServer((req, res) => {
-    console.log(req.url);
-    const timestamp = new Date();
-    console.log("I totally received a Request!!!!!!!!!!!!!!!!!!!");
-    res.end(`<h1>Hello World ${timestamp}</h1>`);  // .end() sends the response.
-                                          // It "tapes up the box and ships it".
-});
+const nerds = require("nerds");
 
-// http.createServer() accepts a function and returns a "server"
-// When the server receives a Request:
-// 1. It puts together *most* of a Response.
-// 2. It calls *your* function and passes it the Request and Response
+const random = function (maxNum){
+    return Math.floor(Math.random()*Math.floor(maxNum))
+};
+
+let randomArraylength = random(2)
+let randomArraylength2 = random(2)
 
 
-// What is 3000?
-server.listen(3000);
+// function handleRequestAndResponse(req, res) {
+//     let Poke = nerds.resolve('Pokemon',200).include(['name','type']).asArray();
+//     // string = `<h1>I think this is cool ${Poke[randomArraylength].name}, i hate this one ${Poke[randomArraylength2].name}</h1>`
+//     string2 = ""
+//     Poke.forEach(element => {
+//        string2 +=`<h1 style="color:red">${element.name}:${element.type}</h1>` 
+//     });
+//   res.end(string2)
+// };
+
+function getRandomName(req, res) {
+    const harrypotterCharFullName = nerds.resolve("Harry Potter").include(['full', 'gender']).asArray();
+    // console.log(harrypotterCharFullName[0].full, harrypotterCharFullName[0].gender)
+    // console.log(harrypotterCharFullName.first, harrypotterCharFullName.gender)
+    const pokemonChar = nerds.resolve('Pokemon',2).include(['name','type']).asArray();
+    res.end(`<h1>Hello World,</h1><br/>
+    <h3>This is ${harrypotterCharFullName[0].full} from Harry Potter. I am a ${harrypotterCharFullName[0].gender}.<br/>
+    This is ${pokemonChar[0].name} from Pokemon! I am a ${pokemonChar[0].type}</h3>`)
+    console.log('char',pokemonChar);
+    console.log('Yay, you did it!');
+ }
+const server = http.createServer(getRandomName);  
+server.listen(3007);
